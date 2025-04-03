@@ -1,1 +1,91 @@
+#include <kipr/wombat.h>
+#include <stdbool.h>
+//line follower -- follows a line lineFollower(travel distance, move fowards, line detect mode)
+void lineFollower(int length,bool foward) {
+    
+ //resets
+        clear_motor_position_counter(0);
+         clear_motor_position_counter(1);
+    //for foward
+       if(foward==true)
+       {
+           //runs till length is ran
+    while(length*2>=(gmpc(0)+gmpc(1))*-1)
+   		 {
+        
+        //ifs to follow lines using sensors
+        if(analog(2)<=3000&&analog(0)<=2500)
+        	{
+            motor(0,-100);
+            motor(1,-80);
+        	}
+        else if(analog(0)>=3000&&analog(2)<=2500)
+      	    {
+            motor(1,-100);
+            motor(0,-80);
+      	    }
+        else if(analog(0)>=3000&&analog(2)>=3000)
+       	    {
+            motor(0,-90);
+            motor(1,-90);
+       	    }
+        else if(analog(0)<=3000&&analog(2)<=3000)
+       		 {
+            motor(1,-90);
+            motor(0,-90);
+       		 }
+        
+        
+ 		   }//while loop second bracket
+       }//if foward second bracket
+    else if(false==foward)
+    {
+        //till length is ran but backwards
+          while(gmpc(0)+gmpc(1)<=length*2)
+   		 {
+        
+        //follow line but backwards
+         if(analog(2)>=3000&&analog(0)<=2500)
+        {
+            motor(0,100);
+            motor(1,80);
+        }
+        else if(analog(0)>=3000&&analog(2)<=2500)
+        {
+            motor(1,100);
+            motor(0,80);
+        }
+        else if(analog(0)>=3000&&analog(2)>=3000)
+        {
+            motor(0,90);
+            motor(1,90);
+        }
+        else if(analog(0)<=3000&&analog(2)<=3000)
+        {
+            motor(1,90);
+            motor(0,90);
+        }
+        
+              
+        
+    }//else if foward second bracket                
+    }//while loop second bracket  
+   			motor(1,0);
+            motor(0,0);
+    
+    
+    }//end of function
 
+
+
+
+//start of main function
+int main()
+{ 
+   //call function
+   lineFollower(10000,true);
+    msleep(3000);
+    
+    ao();
+    return 0;
+}
