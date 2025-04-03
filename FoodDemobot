@@ -1,1 +1,94 @@
+#include <kipr/wombat.h>
 
+int main()
+{
+	enable_servos();
+    set_servo_position(0,2000);
+    set_servo_position(2,1500);
+	// 6 cm away from left wall pipe, light sensor flush against the wall
+
+
+
+
+
+
+    
+
+	motor(0,100);
+    motor(1,87); // forward until black line
+	msleep(3300);
+
+    motor(0,0);
+    motor(1,0); // "borrowed" code that opens claw and moves into food shelf, moves claw down, and moves backwards and bottom bucket upwards to catch food items
+    set_servo_position(0, 1800);
+    set_servo_position(2, 1500);  // opens
+    msleep(1000);
+    
+    set_servo_position(0, 1570); // top claw moves down
+    msleep(1000);
+    
+    motor(0, -81);
+    motor(1, -100);
+    msleep(700);
+    // and then the robot is gonna throw it back wild style (catches items and moves back)
+    set_servo_position(2, 1200);
+    
+
+
+    motor(0,0);
+    motor(1,0);
+    msleep(1000); 
+    
+    motor(0,-100);
+    motor(1,-100);
+    msleep(850);// stops and  backs up with food items (hopefully)
+   
+    
+    motor(0,0);
+    motor(1,-55);
+    msleep(1650); // backs up to barrier to go with black line - often gets stuck on pipe and doesn't turn enough
+
+    
+
+    motor(0,100);
+    motor(1,100);
+    msleep(2550); // goes forward to not trigger sensors on pipe 
+    
+    motor(0,0);
+    motor(1,0);
+    msleep(1500);
+
+
+    while (analog(0) < 2000 && analog(1) < 2000) { // goes till first black line
+    motor(0,-87);
+    motor(1,-100);
+    }
+    printf("first line passed");
+    msleep(2000);
+    while (analog(0) < 1000 || analog(1) < 1000) { // should go to second black line
+    motor(0,-87);
+    motor(1,-100);
+/*
+    if (analog(0) > 1000) { // adjustments based on if robot is shifting (redo this)
+    motor(0,-87);
+    motor(1,-100);
+
+    }
+        
+    if (analog(1) > 1000) {
+    motor(0,-87);
+    motor(1,-100);
+
+    
+    
+    }
+*/
+    }
+
+    
+    motor(0,0);
+    motor(1,0);
+    msleep(1000); //at this point robot should stop near food trays
+    
+    return 0;
+}
